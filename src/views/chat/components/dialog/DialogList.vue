@@ -27,6 +27,7 @@
 import DialogResizableSidebar from '@/views/chat/components/dialog/DialogResizableSidebar'
 import DialogListItem from '@/views/chat/components/dialog/DialogListItem'
 import { mapState } from 'vuex'
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
   name: 'DialogList',
@@ -56,37 +57,16 @@ export default {
   },
   methods: {
     createDialog() {
-      const dialogList = [
-        {
-          avatar: '/role/bugstack.png',
-          dialogId: Math.floor(Math.random() * 900) + 100,
-          read: true,
-          subTitle: '有什么可以帮你的吗？',
-          timestamp: Date.now(),
-          title: '直接对话',
-          count: Math.floor(Math.random() * 90)
-        },
-        {
-          avatar: '/role/interview.png',
-          dialogId: Math.floor(Math.random() * 900) + 100,
-          read: true,
-          subTitle: '请回答一下Java的基础类型有哪些？',
-          timestamp: Date.now(),
-          title: '面试官',
-          count: Math.floor(Math.random() * 90)
-        },
-        {
-          avatar: '/role/psychological.png',
-          dialogId: Math.floor(Math.random() * 900) + 100,
-          read: true,
-          subTitle: '吹灭别人的灯，不能照亮自己',
-          timestamp: Date.now(),
-          title: '心里咨询',
-          count: Math.floor(Math.random() * 90)
-        }
-      ]
-      const idx = Math.floor(Math.random() * 3)
-      const newDialog = dialogList[idx]
+      const dialogId = uuidv4()
+      const newDialog = {
+        avatar: '/role/bugstack.png',
+        dialogId: dialogId,
+        read: true,
+        subTitle: '有什么可以帮你的吗？',
+        timestamp: Date.now(),
+        title: '对话: ' + dialogId.toString().substring(0,3),
+        count: 1
+      }
       this.setSelected(newDialog)
       this.$store.dispatch('chat/openSession')
       this.$store.dispatch('chat/updateSessionDialog', newDialog)
@@ -94,7 +74,7 @@ export default {
     },
     selectDialog(dialog) {
       // 点击时跳转到对应的界面，并传递必要参数信息
-      this.$router.push({ path: `/chat/${dialog.dialogId}`, query: { title: dialog.title }})
+      this.$router.push({ path: `/chat/${dialog.dialogId}`, query: { title: dialog.title } })
       this.setSelected(dialog)
     },
     // 设置选中的对话

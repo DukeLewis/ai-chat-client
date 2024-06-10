@@ -50,7 +50,7 @@ export default {
       this.onPressEnter()
     },
     onPressEnter() {
-      if (this.value && this.value.trim() !== '') {
+      if (this.value && this.value.trim() !== '' && this.currentSession) {
         this.$emit('sendMsg', this.value)
         this.value = ''
       }

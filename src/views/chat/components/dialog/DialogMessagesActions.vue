@@ -56,6 +56,7 @@ export default {
       this.$store.dispatch('chat/updateCurrentSession', session => {
         session.messages = []
       })
+      this.$message.success('当前上下文已清除')
     },
     handleVersionChange(value) {
       this.$store.dispatch('chat/updateCurrentSession', session => {

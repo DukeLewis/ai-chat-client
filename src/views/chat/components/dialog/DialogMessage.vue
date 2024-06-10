@@ -4,8 +4,8 @@
       <span>{{ currentSession ? $route.query.title : '' }}</span>
       <el-button type="danger" size="mini" @click="delCurrentSession" class="el-icon-close del-btn"></el-button>
     </div>
-    <div class="scroll">
-      <DialogMessageItem v-for="(message, index) in messages" :key="index" :message="message"/>
+    <div ref="scrollContainer" class="scroll">
+      <DialogMessageItem v-for="message in messages" :key="message.id" :message="message"/>
     </div>
     <DialogMessageInput @sendMsg="sendMsg"/>
   </div>
@@ -14,9 +14,7 @@
 <script>
 import DialogMessageItem from '@/views/chat/components/dialog/DialogMessageItem'
 import DialogMessageInput from '@/views/chat/components/dialog/DialogMessageInput'
-// import ClearContextDivider from '@/views/chat/components/dialog/ClearContextDivider'
 import { mapState } from 'vuex'
-import { MessageDirection, MessageRole, MessageType } from '@/types/chat'
 
 export default {
   name: 'DialogMessage',
@@ -28,42 +26,44 @@ export default {
       return this.currentSession ? this.currentSession.messages : []
     }
   },
+  mounted() {
+    this.scrollToBottom()
+  },
   methods: {
     // 输入事件
     sendMsg(value) {
-      const newMessage01 = {
-        avatar: '/role/runny-nose.png',
-        content: value,
-        message_type: MessageType.Text,
-        time: Date.now(),
-        direction: MessageDirection.Send,
-        role: MessageRole.user
-      }
-
-      const newMessage02 = {
-        avatar: '/role/wali.png',
-        content: '`ChatGPT` 接口尚未对接，暂时还不能回复 **！！！**',
-        message_type: MessageType.Text,
-        time: Date.now(),
-        direction: MessageDirection.Receive,
-        role: MessageRole.system
-      }
-      // this.messages.push(newMessage01, newMessage02)
-      this.$store.dispatch('chat/onSendMessage', [newMessage01, newMessage02])
+      this.$store.dispatch('chat/onSendMessage', value)
     },
     delCurrentSession() {
       this.$store.dispatch('chat/deleteSession', this.currentSession.index)
+      this.$message.success('当前会话已删除')
+    },
+    scrollToBottom() {
+      this.$nextTick(() => {
+        const container = this.$refs.scrollContainer
+        container.scrollTop = container.scrollHeight
+      })
     }
   },
+  // eslint-disable-next-line vue/order-in-components
   components: {
     DialogMessageItem,
     DialogMessageInput
+  },
+  watch: {
+    'messages': {
+      deep: true,
+      handler() {
+        this.scrollToBottom()
+      }
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
 @import '@/views/chat/components/dialog/scss/dialog-message.module.scss';
+
 .del-btn {
   padding-bottom: 7px;
   padding-left: 6px;
