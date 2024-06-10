@@ -10,7 +10,7 @@
       class="input-area"
       rows="20"
     />
-    <el-button :disabled="!value.length" type="primary" class="btn" @click="onSend">
+    <el-button :disabled="!value.length" type="primary" class="btn el-icon-position" @click="onSend">
       发送(Enter)
     </el-button>
   </div>

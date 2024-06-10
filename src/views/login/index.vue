@@ -2,12 +2,12 @@
   <div>
     <el-row style="margin-top: 150px">
       <el-col :span="8" offset="8">
-        <el-form :model="loginForm" status-icon :rules="loginRules" ref="loginForm" label-width="100px" class="demo-loginForm">
+        <el-form :model="loginForm" status-icon ref="loginForm" :rules="loginRules" label-width="100px" class="demo-loginForm">
           <el-form-item label="用户名" prop="username">
-            <el-input type="text" v-model="loginForm.username" autocomplete="off"></el-input>
+            <el-input v-model="loginForm.username" type="text" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
-            <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
+            <el-input v-model="loginForm.password" type="password" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="验证码" prop="code">
             <el-input v-model.number="loginForm.code"></el-input>

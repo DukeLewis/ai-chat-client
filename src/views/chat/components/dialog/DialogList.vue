@@ -36,15 +36,18 @@ export default {
   },
   data() {
     return {
-      dialogs: [],
       selected: null,
       searchWidth: '190px'
     }
   },
   computed: {
     ...mapState({
-      opened: state => state.app.sidebar.opened
-    })
+      opened: state => state.app.sidebar.opened,
+      sessionStore: state => state.chat.ChatStore
+    }),
+    dialogs() {
+      return this.sessionStore && this.sessionStore.sessions ? this.sessionStore.sessions.map(session => session.dialog) : []
+    }
   },
   watch: {
     opened(val) {
@@ -84,9 +87,9 @@ export default {
       ]
       const idx = Math.floor(Math.random() * 3)
       const newDialog = dialogList[idx]
-      console.log(newDialog)
-      this.dialogs.unshift(newDialog)
       this.setSelected(newDialog)
+      this.$store.dispatch('chat/openSession')
+      this.$store.dispatch('chat/updateSessionDialog', newDialog)
       this.$message.success('添加成功')
     },
     selectDialog(dialog) {

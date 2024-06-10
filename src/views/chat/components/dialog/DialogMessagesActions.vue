@@ -2,7 +2,7 @@
   <div class="chat-input-actions">
     <div class="chat-input-action" @click="handleActionClick">
       <div class="icon">
-        <i class="el-icon-arrow-down"/>
+        <i class="el-icon-delete"/>
       </div>
     </div>
     <el-select
@@ -54,11 +54,7 @@ export default {
   methods: {
     handleActionClick() {
       this.$store.dispatch('chat/updateCurrentSession', session => {
-        if (session.clearContextIndex === session.messages.length) {
-          session.clearContextIndex = undefined
-        } else {
-          session.clearContextIndex = session.messages.length
-        }
+        session.messages = []
       })
     },
     handleVersionChange(value) {

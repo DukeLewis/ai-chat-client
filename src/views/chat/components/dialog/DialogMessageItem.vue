@@ -2,7 +2,7 @@
   <div :class="isUser ? 'chat-message-user' : 'chat-message'">
     <div class="chat-message-container">
       <div class="chat-message-avatar">
-        <a-avatar :shape="'square'" :src="message.avatar" :size="40" :style="avatarStyle" />
+        <el-avatar :shape="'square'" :src="message.avatar" :size="40" class="chat-message-avatar" />
       </div>
       <div class="chat-message-item">
         <Markdown
@@ -37,15 +37,12 @@ export default {
   },
   data() {
     return {
-      isReceive: this.message.direction === 'Receive'
+      isReceive: this.message && this.message.direction === 'Receive'
     }
   },
   computed: {
-    showReceive() {
-      return this.isReceive ? 'receive' : 'send'
-    },
     isUser() {
-      return this.message.role === MessageRole.user
+      return this.message && this.message.role === MessageRole.user
     }
   }
 }
